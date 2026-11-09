@@ -3,7 +3,7 @@ title: "Omni DIrectional Drivebase"
 github: ""
 description: "Omni directional drivebase powered by 4 motors and mecanum wheels. Goal is to make this a hub for any future projects I might make, such as a robotic arm, which I can attach to the drivebase and leverage its wireless communication I developed a few months ago."
 created_at: "2026-11-04"
-total_time: "6h 36m"
+total_time: "9h 6m"
 ---
 
 # November 4, 2026: Set up CAD & Initial research
@@ -67,3 +67,14 @@ Today I finished cadding the belly pan or at least the actual functional part. I
 ![](https://fabricate.hackclub-assets.com/980b1db1c6d220e58cb75ebe65fae2c8e640411103dc24b3abcdf45ba543822a/image-png/image.png)
 
 **Total time spent: 1h 42m**
+
+# November 8, 2026: Taking a break and doing software!
+
+TLDR: I made communcations =D
+I didn't feel like cadding, even though all I have to do is make a circular pattern and split and pocket the belly pan so I set up the remote communications!
+It was probably the most annoying thing I have ever done. Today consisted of writing two(mid difficulty) python scripts, one that runs on the SBC, starting a listening server on port 5000, and another listening and communicating over that port. The python scripts themselves weren't that difficult to program, but setting up the wifi communications via a hotspot was very annoying. I decided to use hostapd and dnsmasq, so i can create a network, and communicate over it. Setting up the network was straight forward except for the time i mistook a hyphen for an underscore(+10 min of troubleshooting). The most annoying part was definetly ip assigning. I need to assign the computer 192.168.4.1, so it can communicate successfuly, but obviously that wasn't happening. I took the lazy route and ended up making a startup service that runs a bash script to add the ip address, but a win is a win.
+
+this demo video uses a very arbitrary script on the microcontroller which just repeats what was sent to it, but proves the concept
+![](https://fabricate.hackclub-assets.com/92714f3082f52fa744536a9cb737208c48c1ac1b0e26470fcb98bece1201e0c8/video-quicktime/IMG_2383.mov)
+
+**Total time spent: 2h 30m**
