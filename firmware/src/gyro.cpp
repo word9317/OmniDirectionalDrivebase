@@ -1,4 +1,4 @@
-#include <gryo.h>
+#include <gyro.h>
 #include <Wire.h>
 #include <math.h>
 

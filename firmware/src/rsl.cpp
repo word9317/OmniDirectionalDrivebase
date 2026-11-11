@@ -97,3 +97,9 @@ void sendLED(){
   sendingStartMillis = millis();
   updatePixels();
 }
+
+
+void initLEDController() {
+  Modulino.begin();
+  pixels.begin();
+}

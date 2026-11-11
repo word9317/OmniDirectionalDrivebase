@@ -18,7 +18,8 @@ const int IN4_2 = 12;
 const int ENB_2 = 13;
 
 const bool testingGyro = true;
-
+const bool runningRobot = false;
+const bool isFieldOriented = false;
 
 // rsl stuff
 const unsigned long rslActiveMilis = 500;
