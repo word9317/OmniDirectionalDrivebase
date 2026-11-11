@@ -9,3 +9,5 @@ void handleLEDTimers();
 void setActive(bool active);
 
 void receiveLED();
+
+void sendLED();

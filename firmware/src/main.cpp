@@ -1,18 +1,26 @@
 #include <Arduino.h>
-
-// put function declarations here:
-int myFunction(int, int);
+#include <gyro.h>
+#include <rsl.h>
+#include <constants.h>
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  initLEDController();
+  setActive(false);
+  mpuSetup();
+  mpuCalibrate();
+  Serial.begin(9600);
+  setActive(true);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
+  handleLEDTimers();
+  String response = "";
+  if(testingGyro){
+    response += mpuGetAxis(AXIS_Z);
+  }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  if(response != ""){
+    sendLED();
+    Serial.println(response);
+  }
 }

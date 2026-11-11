@@ -1,10 +1,11 @@
 #include <Arduino.h>
 #include <Modulino.h>
+#include <constants.h>
 
 ModulinoPixels pixels;
 
-const unsigned long ACTIVE_BLINK_INTERVAL = 500;
-const unsigned long RECEIVE_BLINK_DURATION = 50; // when instruction is recieved instead of holding robot over to know when its recieving instructions from the rock
+const unsigned long ACTIVE_BLINK_INTERVAL = rslActiveMilis;
+const unsigned long S_R_BLINK_DURATIO = srMilis; // when instruction is recieved instead of holding robot over to know when its recieving instructions from the rock
 
 bool isSystemActive = false;
 bool activeLedState = false;
@@ -13,17 +14,25 @@ unsigned long lastActiveMillis = 0;
 bool isReceiving = false;
 unsigned long receiveStartMillis = 0;
 
+bool isSending = false;
+unsigned long sendingStartMillis = 0;
+
 // update pixels based on the state
 void updatePixels() {
   // if active, orange is flashing, and if not active, dont flash
-  for (int i = 0; i < 7; i++) {
+  for (int i = 0; i < 6; i++) {
     if (isSystemActive && activeLedState) {
       pixels.set(i, 255, 80, 0, 25);
     } else {
       pixels.clear(i);
     }
   }
-
+  // sending signal light
+  if (isSending) {
+    pixels.set(6, BLUE, 25);
+  } else {
+    pixels.clear(6);
+  }
   // comms signal light
   if (isReceiving) {
     pixels.set(7, BLUE, 25);
@@ -48,8 +57,13 @@ void handleLEDTimers() {
   }
 
   //  turn off blue LED if done recieving
-  if (isReceiving && (currentMillis - receiveStartMillis >= RECEIVE_BLINK_DURATION)) {
+  if (isReceiving && (currentMillis - receiveStartMillis >= S_R_BLINK_DURATIO)) {
     isReceiving = false;
+    needsUpdate = true;
+  }
+
+  if (isSending && (currentMillis - sendingStartMillis >= S_R_BLINK_DURATIO)) {
+    isSending = false;
     needsUpdate = true;
   }
 
@@ -75,5 +89,11 @@ void setActive(bool active) {
 void receiveLED() {
   isReceiving = true;
   receiveStartMillis = millis();
+  updatePixels();
+}
+
+void sendLED(){
+  isSending = true;
+  sendingStartMillis = millis();
   updatePixels();
 }

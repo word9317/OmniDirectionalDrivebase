@@ -16,3 +16,10 @@ const int IN2_2 = 10;
 const int IN3_2 = 11;
 const int IN4_2 = 12;
 const int ENB_2 = 13;
+
+const bool testingGyro = true;
+
+
+// rsl stuff
+const unsigned long rslActiveMilis = 500;
+const unsigned long srMilis = 5;
