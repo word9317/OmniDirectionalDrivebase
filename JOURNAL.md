@@ -3,7 +3,7 @@ title: "Omni DIrectional Drivebase"
 github: ""
 description: "Omni directional drivebase powered by 4 motors and mecanum wheels. Goal is to make this a hub for any future projects I might make, such as a robotic arm, which I can attach to the drivebase and leverage its wireless communication I developed a few months ago."
 created_at: "2026-11-04"
-total_time: "9h 6m"
+total_time: "14h"
 ---
 
 # November 4, 2026: Set up CAD & Initial research
@@ -78,3 +78,33 @@ this demo video uses a very arbitrary script on the microcontroller which just r
 ![](https://fabricate.hackclub-assets.com/92714f3082f52fa744536a9cb737208c48c1ac1b0e26470fcb98bece1201e0c8/video-quicktime/IMG_2383.mov)
 
 **Total time spent: 2h 30m**
+
+# November 9, 2026: Finished pocketing and splitting belly pan!
+
+remind me to never pocket gain.
+
+Today I split up the belly pan into sections printable on my a1 mini and pocketed them. Hypothetically, this should reduce the amount of filament used and maintain structure. This was even more annoying than comms, I had to manually create a pattern for the pocketing, and adjust for screw holes for electronics. I think I might be almost done with cadding, and I can work on the electrical and software front of this project!
+Note: I also added a slot for the battery, I need to still cad a support plate for the battery, so I guess back to onshape =(
+![](https://fabricate.hackclub-assets.com/58bb598e9ea54222bb25f798f186be86810d225456036ce8e99b7a63a8af1016/image-png/image.png)
+
+**Total time spent: 1h 12m**
+
+# November 10, 2026: Designed battery support plate
+
+Today I was very busy, so I did not get to get as much work as I would have liked. I cadded the battery holder, and attached it to the main assembly. Not much to say as cadding it was pretty easy and assembly took no time.
+![](https://fabricate.hackclub-assets.com/1d7cac9833d5a861c8c96dd62ca9d4c368989cf79c200a108d5df4f62d86b4ee/image-png/image.png)
+
+**Total time spent: 42m**
+
+# November 11, 2026: Planned wiring, started firmware
+
+Im back with a few large updates!
+I made all of the wiring plans in Fritzing, and decided all of my pin connections. Wiring this should hopefully be easier now that I have this.
+![](https://fabricate.hackclub-assets.com/f93af830e673c54bef5474cfe47c592b8441896ffd4f0b933b7fef11d02ca443/image-png/image.png)
+> i couldn't find motors, so i just used the defaults. also I am adding a Modulino Pixel for ease of "reading" the state of the arduino. I couldn't add it into the diagram since every arduino uno r4 frpz file was a virus :sob:
+
+
+I also started coding the firmware, I am using platform io since its the goat.
+![](https://fabricate.hackclub-assets.com/4c2800973789eed1919bd9bc0d02fe411aa7dcd1d7c5305419bda2e534941f53/image-png/image.png)
+
+**Total time spent: 3h**
