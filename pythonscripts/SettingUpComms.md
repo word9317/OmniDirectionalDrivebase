@@ -1,5 +1,7 @@
 # ROCK 4C+ Headless Communications Bridge
-Comms server on the Rock 4 C+ Tutorial
+Comms server on the Rock 4 C+ Tutorial and how it works
+# Underlying Principle:
+Laptop sends movement data -> Rock 4 C+ hotspot -> Python script -> Arduino -> Motors
 # 1. Install OS
 I used Debian since Radxa doesnt make any other Operating systems for the Rock 4 C+. I recommend using Debian as this document is talored for it.
 # 2. Update Debian

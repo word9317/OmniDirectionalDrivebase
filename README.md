@@ -8,6 +8,8 @@ I wanted to make my own drivebase for a while, along with a ton of other project
 Robot renders
 ![render of robot sitting](/assets/readme/render1.png)
 ![upside down render of robot](/assets/readme/render2.png)
+Robot Corner Module
+![Closeup of Module](/assets/readme/image.png)
 Wiring Diagram:
 ![wiring diagram made in fritzing](/hardware/wiringDiagram.jpg)
 >not all parts used in robot are available in fritzing so I used placeholders
