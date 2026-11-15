@@ -3,14 +3,15 @@ from datetime import datetime
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
-    QApplication, QHBoxLayout, QLabel, QLayout, QPushButton, QTextEdit, QVBoxLayout, QWidget,
+    QApplication, QHBoxLayout, QLabel, QLayout, QPushButton, QTextEdit, QVBoxLayout, QWidget, QComboBox
 )
 
 from config import (
-    DISABLE_MESSAGE, ENABLE_MESSAGE, ROBOT_IP, ROBOT_PORT, RX_FLASH_MS,
+    DISABLE_MESSAGE, DRIVE_SEND_MS, ENABLE_MESSAGE, LOG_DRIVE, ROBOT_IP, ROBOT_PORT, RX_FLASH_MS,
 )
 from core.key_tracker import KeyTracker
 from core.robot_link import RobotLink
+from core.controller import ControllerInput
 from ui.styles import BLUE, GREEN, GREY, LOG_COLORS, ORANGE, RED
 from ui.widgets import IndicatorRow, StatusBar, make_panel
 
@@ -28,8 +29,9 @@ class DriverStation(QWidget):
         self.link.disconnected.connect(self.on_disconnected)
         self.link.error.connect(self.on_error)
         self.link.line_received.connect(self.on_line_received)
-
+        self.controller = ControllerInput()
         self._build_ui()
+        self.refresh_controllers()
 
         self.keys = KeyTracker(self)
         self.keys.enable_pressed.connect(self.request_enable)
@@ -43,6 +45,10 @@ class DriverStation(QWidget):
         self.rx_flash.timeout.connect(self.refresh_status)
 
         self.refresh_status()
+        self.drive_timer = QTimer(self)
+        self.drive_timer.setInterval(DRIVE_SEND_MS)
+        self.drive_timer.timeout.connect(self.send_drive)
+        self.drive_timer.start()
         self.connect_to_robot()
 
     # ui maker helper function
@@ -67,6 +73,19 @@ class DriverStation(QWidget):
         for row in (self.row_link, self.row_robot, self.row_enabled):
             lay.addWidget(row)
 
+        lay.addSpacing(10)
+        ctrl_title = QLabel("Controller")
+        ctrl_title.setObjectName("title")
+        lay.addWidget(ctrl_title)
+        self.controller_box = QComboBox()
+        self.controller_box.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.controller_box.currentIndexChanged.connect(self.on_controller_selected)
+        lay.addWidget(self.controller_box)
+        refresh_btn = QPushButton("Refresh Controllers")
+        refresh_btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        refresh_btn.clicked.connect(self.refresh_controllers)
+        lay.addWidget(refresh_btn)
+        
         lay.addStretch()
         reconnect_btn = QPushButton("Reconnect to Robot")
         reconnect_btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
@@ -86,7 +105,7 @@ class DriverStation(QWidget):
         lay.addWidget(overview)
 
         self.sb_comm = StatusBar("Communications")
-        self.sb_code = StatusBar("Robot Code")
+        self.sb_code = StatusBar("Robot")
         lay.addWidget(self.sb_comm)
         lay.addWidget(self.sb_code)
 
@@ -95,7 +114,10 @@ class DriverStation(QWidget):
         self.state_label.setFont(QFont("Segoe UI", 16, QFont.Weight.Bold))
         self.state_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         lay.addWidget(self.state_label)
-
+        lay.addSpacing(10)
+        self.drive_label = QLabel("Drive  x 0.00   y 0.00   z 0.00")
+        self.drive_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        lay.addWidget(self.drive_label)
         lay.addStretch()
         panel.setFixedWidth(250)
         return panel
@@ -192,5 +214,31 @@ class DriverStation(QWidget):
         )
 
     def closeEvent(self, event):
+        self.drive_timer.stop()      # no drive frame may follow the final disable
+        self.enabled = False
         self.link.close(last_message=DISABLE_MESSAGE)
+        self.controller.shutdown()
         super().closeEvent(event)
+
+    def refresh_controllers(self):
+        self.controller_box.blockSignals(True)
+        self.controller_box.clear()
+        self.controller_box.addItem("No controller", None)
+        for index, name in self.controller.list_controllers():
+            self.controller_box.addItem(name, index)
+        self.controller_box.blockSignals(False)
+        self.on_controller_selected()
+
+    def on_controller_selected(self, _row=None):
+        self.controller.select(self.controller_box.currentData())
+
+    def send_drive(self):
+        x, y, z = self.controller.read()
+        self.drive_label.setText(f"Drive  x {x:.2f}   y {y:.2f}   z {z:.2f}")
+        if not (self.enabled and self.controller.active):
+            return
+        message = f"{x:.2f}:{y:.2f}:{z:.2f}"
+        if LOG_DRIVE:
+            self.send(message)
+        else:
+            self.link.send(message)

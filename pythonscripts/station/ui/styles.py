@@ -17,4 +17,6 @@ QPushButton:hover { background: #4a4a4a; }
 QPushButton:pressed { background: #2a2a2a; }
 QTextEdit { background: #121212; border: 1px solid #3c3c3c;
     font-family: Consolas, 'Courier New', monospace; }
+QComboBox { background: #121212; border: 1px solid #3c3c3c; padding: 3px 6px; }
+QComboBox QAbstractItemView { background: #121212; selection-background-color: #3a3a3a; }
 """

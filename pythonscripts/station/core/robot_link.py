@@ -56,3 +56,8 @@ class RobotLink(QObject):
             text = line.decode(errors="replace").strip()
             if text:
                 self.line_received.emit(text)
+    # send a message to disable robot because robot can be left enabled when closed
+    def close(self, last_message=None):
+        if last_message and self.send(last_message):
+            self._sock.waitForBytesWritten(500)   # make sure it actually sent before closing
+        self._sock.abort()
