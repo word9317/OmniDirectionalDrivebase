@@ -6,18 +6,30 @@ omni directional drivebase powered by wireless communications via an SBC, and 4 
 I wanted to make my own drivebase for a while, along with a ton of other projects like a ball shooter. I ended up making this project as a base for any future ones, since its made out of aluminum extrusion and uses really easy serial commands for control, it is a great base for starting your own project. This project also leverages my own remote communications that use a Rock 4 C+ in conjunction with an Arduino Uno R4. This combination allows for fast communications, with the possibility to run computer vision and turn this project into a great hub for learning.
 ## Repo breakdown:
 `assets` - Images used in this readme
+
 `firmware` - Code to be uploaded to the Arduino via Platform IO
+
 `hardware` - Fritzing wiring file and step file of CAD
+
 `pythonscripts` - Python script for Rock 4, Station app for controls, and tutorial to set up Rock 4.
+
 ## Gallery
 Robot renders
+
 ![render of robot sitting](/assets/readme/render1.png)
+
 ![upside down render of robot](/assets/readme/render2.png)
+
 Robot Corner Module
+
 ![Closeup of Module](/assets/readme/image.png)
+
 Wiring Diagram:
+
 ![wiring diagram made in fritzing](/hardware/wiringDiagram.jpg)
+
 >not all parts used in robot are available in fritzing so I used placeholders
+
 ## BOM:
 | Item Name                                   | Qty        | Price (total) (USD) | Item link                                                         | Notes                                                                                      |
 |---------------------------------------------|------------|---------------------|-------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
